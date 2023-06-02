@@ -29,7 +29,8 @@ const User = db.define('users', {
   status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 'available'
+    defaultValue: 'available',
+    enum: ['available', 'unavailable']
   }
 })
 
