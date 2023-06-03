@@ -11,7 +11,6 @@ const Repair = db.define('repairs', {
   date: {
     type: DataTypes.DATE,
     allowNull: false,
-
   },
   status: {
     type: DataTypes.BOOLEAN,
@@ -19,8 +18,9 @@ const Repair = db.define('repairs', {
     defaultValue: 'pending'
   },
   userId: {
-    
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 })
 
-module.exports = Repair
+module.exports = Repair 
