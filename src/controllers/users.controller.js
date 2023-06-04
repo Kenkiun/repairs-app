@@ -109,7 +109,7 @@ exports.deleteUser = async (req, res) => {
     
     const user = await User.findOne({
       where: {
-        status: 'available',
+        status: "available",
         id,
       },
     });
@@ -121,7 +121,7 @@ exports.deleteUser = async (req, res) => {
       });
     }
     
-    await user.update({ status: 'unavailable' })
+    await user.update({ status: "unavailable" })
 
     return res.status(200).json({
       status: 'success',
@@ -131,6 +131,6 @@ exports.deleteUser = async (req, res) => {
     return res.status(500).json({
       status: 'fail',
       message: 'Something went very wrong!',
-    });
+    })
   }
 }
