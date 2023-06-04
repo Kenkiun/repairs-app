@@ -38,20 +38,99 @@ exports.createUser = async (req, res) => {
   }
 }
 
-exports.findAUser = (req, res) => {
-  return res.status(200).json({
-    message: 'find a user'
-  })
+exports.findAUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: `The user with id: ${id} doesn't exist`,
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'User found',
+      user
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: 'Something went very wrong!',
+    });
+  }
 }
 
-exports.updateUser = (req, res) => {
-  return res.status(200).json({
-    message: 'update user'
-  })
+exports.updateUser = async (req, res) => { 
+  try {
+    const {id} = req.params;
+    const { name, email } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        id,
+        status: 'available',
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: `User with id: ${id} doesn't exist`,
+      });
+    }
+
+    await user.update({name, email});
+
+    res.status(200).json({
+      status: 'success',
+      message: 'User has been updated',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: 'Something went very wrong!',
+    });
+  }
 }
 
-exports.deleteUser = (req, res) => {
-  return res.status(200).json({
-    message: 'delete user'
-  })
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const user = await User.findOne({
+      where: {
+        status: 'available',
+        id,
+      },
+    });
+    
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: `User with id: ${id} doesn't exist!`,
+      });
+    }
+    
+    await user.update({ status: 'unavailable' })
+
+    return res.status(200).json({
+      status: 'success',
+      message: `the user's account has been disabled!`,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'fail',
+      message: 'Something went very wrong!',
+    });
+  }
 }

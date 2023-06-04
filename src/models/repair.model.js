@@ -15,7 +15,8 @@ const Repair = db.define('repairs', {
   status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 'pending'
+    defaultValue: 'pending',
+    enum: ['pending', 'completed', 'cancelled']
   },
   userId: {
     type: DataTypes.INTEGER,

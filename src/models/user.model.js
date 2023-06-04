@@ -1,6 +1,6 @@
 const {DataTypes} = require('sequelize')
 const {db} = require('./../database/config')
-
+ 
 const User = db.define('users', {
   id: {
     primaryKey: true,
