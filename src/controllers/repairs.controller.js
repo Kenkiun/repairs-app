@@ -1,28 +1,35 @@
-const Repair = require('../models/repair.model')
+const Repair = require('../models/repair.model');
 
 exports.findRepairs = async (req, res) => {
+  try {
+    const repairs = await Repair.findAll({
+      where: {
+        status: 'pending',
+      },
+    });
 
-  const repairs = await Repair.findAll({
-    where: {
-      status: 'pending',
-    },
-  });
-
-  return res.json({
-    results: products.length,
-    status: 'success',
-    message: 'Repair found',
-    repairs,
-  });
-}
+    return res.json({
+      results: repairs.length,
+      status: 'success',
+      message: 'Repair found',
+      repairs,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: 'Something went very wrong',
+    });
+  }
+};
 
 exports.createRepair = async (req, res) => {
   try {
-    const {date, userId} = req.body;
+    const { date, userId } = req.body;
 
     const repair = await Repair.create({
       date,
-      userId
+      userId,
     });
 
     return res.status(201).json({
@@ -35,8 +42,8 @@ exports.createRepair = async (req, res) => {
       status: 'fail',
       message: 'Something went very wrong',
     });
-  } 
-}
+  }
+};
 
 exports.findARepair = async (req, res) => {
   try {
@@ -45,6 +52,7 @@ exports.findARepair = async (req, res) => {
     const repair = await Repair.findOne({
       where: {
         id,
+        status: 'pending',
       },
     });
 
@@ -67,16 +75,15 @@ exports.findARepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+};
 
 exports.updateRepair = async (req, res) => {
   try {
-    const {id} = req.params;
-    const {status} = req.body;
+    const { id } = req.params;
 
     const repair = await Repair.findOne({
       where: {
-        id
+        id,
       },
     });
 
@@ -87,7 +94,7 @@ exports.updateRepair = async (req, res) => {
       });
     }
 
-    await status.update({status: 'completed'});
+    await repair.update({ status: 'completed' });
 
     res.status(200).json({
       status: 'success',
@@ -100,15 +107,15 @@ exports.updateRepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+};
 
 exports.deleteRepair = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const repair = await Repair.findOne({
       where: {
-        status: true,
+        status: 'pending',
         id,
       },
     });
@@ -120,16 +127,17 @@ exports.deleteRepair = async (req, res) => {
       });
     }
 
-    await repair.update({ status: 'cencelled' })
+    await repair.update({ status: 'cancelled' });
 
     return res.status(200).json({
       status: 'success',
       message: 'the repair has been deleted!',
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 'fail',
       message: 'Something went very wrong!',
     });
   }
-} 
+};
