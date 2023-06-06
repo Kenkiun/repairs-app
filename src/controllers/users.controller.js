@@ -46,6 +46,7 @@ exports.findAUser = async (req, res) => {
     const user = await User.findOne({
       where: {
         id,
+        status: 'available'
       },
     });
 
@@ -73,8 +74,8 @@ exports.findAUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => { 
   try {
-    const {id} = req.params;
-    const { name, email } = req.body;
+    const {id} = req.params
+    const { name, email } = req.body
 
     const user = await User.findOne({
       where: {
@@ -90,7 +91,7 @@ exports.updateUser = async (req, res) => {
       });
     }
 
-    await user.update({name, email});
+    await user.update({name, email})
 
     res.status(200).json({
       status: 'success',
@@ -107,27 +108,27 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
     
     const user = await User.findOne({
       where: {
-        status: "available",
         id,
-      },
-    });
+        status: "available"
+      }
+    })
     
     if (!user) {
       return res.status(404).json({
         status: 'error',
-        message: `User with id: ${id} doesn't exist!`,
-      });
+        message: `User with id: ${id} doesn't exist!`
+      })
     }
     
     await user.update({ status: "unavailable" })
 
     return res.status(200).json({
       status: 'success',
-      message: `the user's account has been disabled!`,
+      message: `User's account disabled!`,
     });
   } catch (error) {
     return res.status(500).json({

@@ -1,4 +1,4 @@
-const Repair = require('../models/repair.model');
+const Repair = require('../models/repair.model')
 
 exports.findRepairs = async (req, res) => {
   try {
@@ -21,7 +21,7 @@ exports.findRepairs = async (req, res) => {
       message: 'Something went very wrong',
     });
   }
-};
+}
 
 exports.createRepair = async (req, res) => {
   try {
@@ -43,39 +43,39 @@ exports.createRepair = async (req, res) => {
       message: 'Something went very wrong',
     });
   }
-};
+}
 
 exports.findARepair = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params
 
     const repair = await Repair.findOne({
       where: {
         id,
-        status: 'pending',
-      },
-    });
+        status: 'pending'
+      }
+    })
 
     if (!repair) {
       return res.status(404).json({
         status: 'error',
         message: `The repair with id: ${id} doesn't exist`,
-      });
+      })
     }
 
     return res.status(200).json({
       status: 'success',
       message: 'Repair found',
-      repair,
-    });
+      repair
+    })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.status(500).json({
       status: 'fail',
-      message: 'Something went very wrong!',
-    });
+      message: 'Something went very wrong!'
+    })
   }
-};
+}
 
 exports.updateRepair = async (req, res) => {
   try {
@@ -107,7 +107,7 @@ exports.updateRepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-};
+}
 
 exports.deleteRepair = async (req, res) => {
   try {
@@ -140,4 +140,4 @@ exports.deleteRepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-};
+}

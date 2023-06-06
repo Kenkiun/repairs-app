@@ -12,15 +12,15 @@ const Repair = db.define('repairs', {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  status: {
-    type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
-    allowNull: false,
-    defaultValue: 'pending',
-  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  status: {
+    type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
+    allowNull: false,
+    defaultValue: 'pending',
+  }
 });
 
-module.exports = Repair;
+module.exports = Repair
