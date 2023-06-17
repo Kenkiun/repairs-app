@@ -4,22 +4,30 @@ const { db } = require('./../database/config');
 const Repair = db.define('repairs', {
   id: {
     primaryKey: true,
+    allowNull: true,
     autoIncrement: true,
-    allowNull: false,
     type: DataTypes.INTEGER,
   },
   date: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  userId: {
+  motorsNumber: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   status: {
     type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
-    allowNull: false,
+    allowNull: true,
     defaultValue: 'pending',
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   }
 });
 

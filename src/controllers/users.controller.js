@@ -1,4 +1,6 @@
 const User = require('../models/user.model')
+const generateJWT = require('../utils/jwt')
+const bcrypt = require('bcryptjs')
 
 exports.findUsers = async (req, res) => {
   const users = await User.findAll({
@@ -18,10 +20,13 @@ exports.createUser = async (req, res) => {
   try {
     const {name, email, password, role} = req.body
 
+    const salt = await bcrypt.genSalt(12);
+    const encryptedPassword = await bcrypt.hash(password, salt);
+
     const user = await User.create({
-      name,
-      email,
-      password,
+      name: name.toLowerCase(),
+      email: email.toLowerCase(),
+      password: encryptedPassword,
       role
     })
 
@@ -138,32 +143,32 @@ exports.deleteUser = async (req, res) => {
   }
 }
 
-// exports.createUser = async (req, res) => {
-//   try {
-//     const {name, email, password, role} = req.body
+exports.login = async (req, res, next) => {
+  const {email, password} = req.body
 
-//     if(User.email !== email) {
-//       const user = await User.create({
-//         name,
-//         email,
-//         password,
-//         role
-//       })
-//       res.status(201).json({
-//         message: 'User has been created!',
-//         user
-//       });
-//     } else {
-//       res.json({
-//         message: 'Email already exists'
-//       })
-//     }
-  
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       status: 'fail',
-//       message: 'Something went very wrong',
-//     });
-//   }
-// }
+  const user = await User.findOne({
+    where: {
+      email
+    }
+  })
+
+  if (!(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Incorrect email or Password'
+    })
+  }
+
+  const token = await generateJWT(user.id);
+
+  res.status(200).json({
+    status: 'success',
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
+  })
+}

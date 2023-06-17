@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const usersController = require('./../controllers/users.controller')
+const {findUsers, createUser, findAUser, updateUser, deleteUser, login} = require('../controllers/users.controller')
+const { validUserId } = require('../middlewares/users.middleware')
 
 
-router.route('/')
-.get(usersController.findUsers)
-.post(usersController.createUser)
 
-router.route('/:id')
-.get(usersController.findAUser)
-.patch(usersController.updateUser)
-.delete(usersController.deleteUser)
+router.get('/', findUsers)
+router.post('/create', createUser)
+router.post('/login', login)
+
+router.get('/:id', validUserId, findAUser)
+router.patch('/:id', validUserId, updateUser)
+router.delete('/:id', validUserId, deleteUser)
 
 module.exports = router

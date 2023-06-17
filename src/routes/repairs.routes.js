@@ -1,14 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const repairsController = require('./../controllers/repairs.controller')
+const {findRepairs, createRepair, findARepair, updateRepair, deleteRepair} = require('./../controllers/repairs.controller')
+const { restricTo } = require('../middlewares/auth.middlewares')
+const { validRepairId } = require('../middlewares/repairs.middleware')
 
-router.route('/')
-.get(repairsController.findRepairs)
-.post(repairsController.createRepair)
 
-router.route('/:id')
-.get(repairsController.findARepair)
-.patch(repairsController.updateRepair)
-.delete(repairsController.deleteRepair)
+
+router.get('/', restricTo('client'), findRepairs)
+router.post('/', createRepair)
+
+router.get('/:id', restricTo('client'), validRepairId, findARepair)
+router.patch('/:id', restricTo('client'), validRepairId, updateRepair)
+router.delete('/:id', restricTo('client'), validRepairId, deleteRepair)
 
 module.exports = router

@@ -5,7 +5,7 @@ const User = db.define('users', {
   id: {
     primaryKey: true,
     autoIncrement: true,
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER
   },
   name: {
@@ -23,12 +23,12 @@ const User = db.define('users', {
   },
   role: {
     type: DataTypes.ENUM('client', 'employee'),
-    allowNull: false,
+    allowNull: true,
     defaultValue: 'client',
   },
   status: {
     type: DataTypes.ENUM('available', 'unavailable'),
-    allowNull: false,
+    allowNull: true,
     defaultValue: 'available'
   }
 })
