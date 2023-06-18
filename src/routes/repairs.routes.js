@@ -14,4 +14,4 @@ router.get('/:id', validRepairId, findARepair)
 router.patch('/:id', validRepairId, updateRepair)
 router.delete('/:id', validRepairId, deleteRepair)
 
-module.exports = router
+module.exports = router;
