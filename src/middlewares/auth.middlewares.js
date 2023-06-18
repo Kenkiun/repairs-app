@@ -2,6 +2,8 @@ const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 const {promisify} = require('util')
 
+
+// * Here >= Export *//
 exports.protect = async(req, res, next) => {
   
   let token
@@ -53,6 +55,7 @@ exports.protect = async(req, res, next) => {
   next()
 }
 
+// * Here *// Name
 exports.restricTo = (...roles) => {
   return (req, res, next) => {
     if(!roles.includes(req.sessionUser.role)) {
