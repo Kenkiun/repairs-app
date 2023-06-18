@@ -13,15 +13,10 @@ exports.validRepairId = async (req, res, next) => {
 
   if(!repair) {
     return res.status(404).json({
-      status: 'error',
-      message: 'Error',
+      status: 'Callate puto',
+      message: 'restricTo',
     });
   }
-
-  res.status(200).json({
-    status: 'success',
-    message: 'success'
-  })
 
   
   next()

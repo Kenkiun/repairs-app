@@ -89,7 +89,8 @@ exports.updateRepair = async (req, res) => {
       },
     });
 
-    if (!repair) {
+
+    if(!repair) {
       return res.status(404).json({
         status: 'error',
         message: `Repair with id: ${id} doesn't exist`,

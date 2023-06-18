@@ -9,21 +9,8 @@ exports.validUserId = async (req, res, next) => {
       id
     }
   })
-
-  if(!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'Error',
-    });
-  }
   
   req.user = user
 
-  res.status(200).json({
-    status: 'success',
-    message: 'success'
-  })
-
-  
   next()
 }

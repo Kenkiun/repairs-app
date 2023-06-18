@@ -3,6 +3,7 @@ const generateJWT = require('../utils/jwt')
 const bcrypt = require('bcryptjs')
 
 exports.findUsers = async (req, res) => {
+  
   const users = await User.findAll({
       where: {
         status: 'available'
