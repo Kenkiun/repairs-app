@@ -11,7 +11,7 @@ const Repair = db.define('repairs', {
   date: {
     type: DataTypes.DATE,
     allowNull: false,
-  },
+  }, 
   motorsNumber: {
     type: DataTypes.INTEGER,
     allowNull: false

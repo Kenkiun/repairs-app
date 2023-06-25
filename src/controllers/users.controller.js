@@ -1,8 +1,10 @@
 const User = require('../models/user.model')
+const catchAsync = require('../utils/catchAsync')
 const generateJWT = require('../utils/jwt')
 const bcrypt = require('bcryptjs')
 
-exports.findUsers = async (req, res) => {
+
+exports.findUsers = catchAsync(async(req, res) => {
   
   const users = await User.findAll({
       where: {
@@ -15,9 +17,9 @@ exports.findUsers = async (req, res) => {
       results: users.length,
       users
     })
-}
+})
 
-exports.createUser = async (req, res) => {
+exports.createUser = catchAsync(async(req, res) => {
   try {
     const {name, email, password, role} = req.body
 
@@ -43,9 +45,9 @@ exports.createUser = async (req, res) => {
       message: 'Something went very wrong',
     });
   }
-}
+})
 
-exports.findAUser = async (req, res) => {
+exports.findAUser = catchAsync(async(req, res) => {
   try {
     const { id } = req.params;
 
@@ -76,9 +78,9 @@ exports.findAUser = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+})
 
-exports.updateUser = async (req, res) => { 
+exports.updateUser = catchAsync(async(req, res) => { 
   try {
     const {id} = req.params
     const { name, email } = req.body
@@ -110,9 +112,9 @@ exports.updateUser = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+})
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = catchAsync(async(req, res) => {
   try {
     const { id } = req.params
     
@@ -142,9 +144,9 @@ exports.deleteUser = async (req, res) => {
       message: 'Something went very wrong!',
     })
   }
-}
+})
 
-exports.login = async (req, res, next) => {
+exports.login = catchAsync(async(req, res, next) => {
   const {email, password} = req.body
 
   const user = await User.findOne({
@@ -172,4 +174,4 @@ exports.login = async (req, res, next) => {
       role: user.role,
     }
   })
-}
+})

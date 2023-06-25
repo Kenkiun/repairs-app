@@ -5,7 +5,7 @@ const User = db.define('users', {
   id: {
     primaryKey: true,
     autoIncrement: true,
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.INTEGER
   },
   name: {

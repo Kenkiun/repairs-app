@@ -1,10 +1,11 @@
 const User = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 const {promisify} = require('util')
+const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
 
 
-// * Here >= Export *//
-exports.protect = async(req, res, next) => {
+exports.PROTECT = async(req, res, next) => {
   
   let token
 
@@ -38,24 +39,20 @@ exports.protect = async(req, res, next) => {
     })
   }
 
-  if(user.passwordChangedAt) {
-    const changedTimeStamp = parseInt(
-      user.passwordChangedAt.getTime() / 1000, 10
-    )
-    if(decoded.iat < changedTimeStamp) {
-      return res.status(401).json({
-        status: 'error',
-        message: 'User recently changed password!, please try again.'
-      })
-    }
-  }
-
   req.sessionUser = user
 
   next()
 }
 
-// * Here *// Name
+exports.protectAccountOwner = catchAsync(async(req, res, next) => {
+  const {user, sessionUser} = req
+  if(user.id !== sessionUser.id) {
+    return next(new AppError('You do not own this account', 401))
+   }
+
+   next()
+})
+
 exports.restricTo = (...roles) => {
   return (req, res, next) => {
     if(!roles.includes(req.sessionUser.role)) {

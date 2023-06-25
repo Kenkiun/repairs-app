@@ -1,11 +1,23 @@
-const Repair = require('../models/repair.model')
+const Repair = require('../models/repair.model');
+const User = require('../models/user.model');
+const catchAsync = require('../utils/catchAsync');
 
-exports.findRepairs = async (req, res) => {
+
+exports.findRepairs = catchAsync(async(req, res) => {
   try {
     const repairs = await Repair.findAll({
       where: {
-        status: 'pending',
+        status: 'pending' || 'completed', 
       },
+      attributes: {
+        exclude: ['id', 'password']
+      },
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email', 'role', 'status']
+        }
+      ]
     });
 
     return res.json({
@@ -21,9 +33,9 @@ exports.findRepairs = async (req, res) => {
       message: 'Something went very wrong',
     });
   }
-}
+})
 
-exports.createRepair = async (req, res) => {
+exports.createRepair = catchAsync(async(req, res) => {
   try {
     const { date, userId, description, motorsNumber } = req.body;
 
@@ -45,9 +57,9 @@ exports.createRepair = async (req, res) => {
       message: 'Something went very wrong',
     });
   }
-}
+})
 
-exports.findARepair = async (req, res) => {
+exports.findARepair = catchAsync(async(req, res) => {
   try {
     const { id } = req.params
 
@@ -77,9 +89,9 @@ exports.findARepair = async (req, res) => {
       message: 'Something went very wrong!'
     })
   }
-}
+})
 
-exports.updateRepair = async (req, res) => {
+exports.updateRepair = catchAsync(async(req, res) => {
   try {
     const { id } = req.params;
 
@@ -110,9 +122,9 @@ exports.updateRepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+})
 
-exports.deleteRepair = async (req, res) => {
+exports.deleteRepair = catchAsync(async(req, res) => {
   try {
     const { id } = req.params;
 
@@ -143,4 +155,4 @@ exports.deleteRepair = async (req, res) => {
       message: 'Something went very wrong!',
     });
   }
-}
+})
